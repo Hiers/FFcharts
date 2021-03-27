@@ -35,11 +35,10 @@ point *Parser::parseFile(char *fileName){
             xml.readNextStartElement();
             while(xml.name() != QLatin1String("frame")){
                 xml.readNextStartElement();
-                printf("%s\n", xml.name().toUtf8().data());
 
                 if(xml.name() == QLatin1String("fyi")){
                     size = xml.attributes().value(QStringLiteral("numOfFrames")).toInt();
-                    //vmaf = xml.attributes().value(QStingLiteral("");
+                    vmaf = xml.attributes().value(QStringLiteral("aggregateVMAF")).toDouble();
                     xml.skipCurrentElement();
                 }
             }
