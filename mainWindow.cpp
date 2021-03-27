@@ -116,9 +116,13 @@ mainWindow::mainWindow(){
 
     connect(openBtn, &QPushButton::clicked, this, &mainWindow::chooseFile);
     connect(addBtn, &QPushButton::clicked, this, &mainWindow::requestParse);
-    connect(this, &mainWindow::parseSignal, worker, &Worker::parseFile);
     connect(chartBtn, &QPushButton::clicked, this, &mainWindow::requestChart);
+
+    connect(removeBtn, &QPushButton::clicked, this, &mainWindow::requestRemove);
+
+    connect(this, &mainWindow::parseSignal, worker, &Worker::parseFile);
     connect(worker, &Worker::placeholder, this, &mainWindow::setInfo);
+    
 
     thread.start();
     window = NULL;
@@ -170,13 +174,9 @@ void mainWindow::setInfo(point *dataSet){
 void mainWindow::requestParse(){
     
     QString listItem;
-    listItem.setNum(seriesCount, 10);
-    listItem.append(" - ");
     listItem.append(relativePath);
 
     listSeries->addItem(listItem);
-    seriesCount++;
-    
     type = 0;
     chart = charts->createChart(data, type, subsampleSet->value());
     if(chart)
@@ -196,4 +196,13 @@ void mainWindow::requestChart(){
         window->setWindowTitle("Chart View");
         window->show();
     }
+}
+
+void mainWindow::requestRemove(){
+    QListWidgetItem *item = listSeries->currentItem();
+    int row = item->listWidget()->row(item);
+    listSeries->takeItem(row);
+    delete item;
+
+    chart = charts->removeSeries(row);
 }

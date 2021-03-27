@@ -6,7 +6,7 @@ int main(int argc, char *argv[]){
     
     mainWindow window;
     
-    window.setWindowTitle("FFmpeg Charts");
+    window.setWindowTitle("FFcharts");
     window.resize(480, 340);
     window.show();
     

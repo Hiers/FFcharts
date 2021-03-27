@@ -92,6 +92,7 @@ class mainWindow:public QMainWindow{
     private slots:
         void requestParse();
         void requestChart();
+        void requestRemove();
 
     signals:
         void parseSignal(QString fileName);
