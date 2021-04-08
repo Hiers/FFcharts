@@ -1,5 +1,4 @@
 #pragma once
-#include <forward_list>
 #include <QMainWindow>
 #include <QGridLayout>
 #include <QLabel>
@@ -16,7 +15,6 @@
 #include <QTabWidget>
 
 #include <QtCharts/QChart>
-#include <QtCharts/QChartView>
 
 #include "worker.h"
 #include "charts.h"

@@ -14,7 +14,7 @@ INCLUDEPATH += .
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += mainWindow.h worker.h parser.h charts.h chartWindow.h
-SOURCES += main.cpp mainWindow.cpp worker.cpp parser.cpp charts.cpp chartWindow.cpp
+HEADERS += mainWindow.h worker.h parser.h charts.h chartWindow.h customChartView.h
+SOURCES += main.cpp mainWindow.cpp worker.cpp parser.cpp charts.cpp chartWindow.cpp customChartView.cpp
 
 QT += widgets charts

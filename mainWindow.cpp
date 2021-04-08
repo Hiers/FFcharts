@@ -144,6 +144,7 @@ void mainWindow::closeEvent(QCloseEvent *event){
 }
 
 
+
 void mainWindow::chooseFile(){
     if(!filePath.isEmpty())
         filePath.clear();
@@ -188,6 +189,7 @@ void mainWindow::requestChart(){
     if(!window){
         window = new chartWindow();
         window->changeChart(chart);
+        installEventFilter(window);
     }
     
     

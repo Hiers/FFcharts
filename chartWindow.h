@@ -1,8 +1,10 @@
 #pragma once
 #include <QWidget>
 #include <QVBoxLayout>
+#include <QPushButton>
+#include <QButtonGroup>
 #include <QtCharts/QChart>
-#include <QtCharts/QChartView>
+#include "customChartView.h"
 #include <QtCharts/QLineSeries>
 
 class chartWindow:public QWidget{
@@ -12,8 +14,17 @@ class chartWindow:public QWidget{
         void changeChart(QtCharts::QChart *chart);
     
     private:
+        QPoint mPos;
+        QPoint mPrevPos;
+
+        QHBoxLayout *buttons;
+
+        QButtonGroup *exclusiveCheck;
+        QPushButton *moveBtn;
+        QPushButton *rubberBtn;
+
         QVBoxLayout *layout;
-        QtCharts::QChartView *chartView;
+        customChartView *chartView;
 };
 
 

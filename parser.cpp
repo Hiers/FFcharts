@@ -23,7 +23,7 @@ point *Parser::parseFile(char *fileName){
     else{
         QByteArray text = file.readAll();
         QJsonDocument json = QJsonDocument::fromJson(text, &err);
-        point *dataSet;
+        point *dataSet = NULL;
         int size;
         int vmaf;
 
@@ -39,6 +39,8 @@ point *Parser::parseFile(char *fileName){
                 if(xml.name() == QLatin1String("fyi")){
                     size = xml.attributes().value(QStringLiteral("numOfFrames")).toInt();
                     vmaf = xml.attributes().value(QStringLiteral("aggregateVMAF")).toDouble();
+                    dataSet[0].x = vmaf;
+                    dataSet[0].y = size;
                     xml.skipCurrentElement();
                 }
             }
@@ -63,8 +65,6 @@ point *Parser::parseFile(char *fileName){
                 file.close();
                 return NULL;
             }
-            dataSet[0].x = vmaf;
-            dataSet[0].y = size;
             file.close();
             return dataSet;
         }
