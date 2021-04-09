@@ -33,7 +33,7 @@ chartWindow::chartWindow(){
     layout->addWidget(chartView);
     setLayout(layout);
 
-    //connect(exclusiveCheck, QButtonGroup::idClicked, this, chartWindow::setMode);
+    connect(exclusiveCheck, &QButtonGroup::idClicked, chartView, &customChartView::setMode);
 }
 
 chartWindow::~chartWindow(){
@@ -43,8 +43,6 @@ chartWindow::~chartWindow(){
 void chartWindow::changeChart(QtCharts::QChart *chart){
     chartView->setChart(chart);
 }
-
-
 
 //MAKE BUTTONS THAT SWITCH BETWEEN MOVE AND RUBBERBAND
 //KEEP SCROLL FOR BOTH
