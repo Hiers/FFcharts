@@ -43,18 +43,3 @@ chartWindow::~chartWindow(){
 void chartWindow::changeChart(QtCharts::QChart *chart){
     chartView->setChart(chart);
 }
-
-//MAKE BUTTONS THAT SWITCH BETWEEN MOVE AND RUBBERBAND
-//KEEP SCROLL FOR BOTH
-/*void chartWindow::wheelEvent(QWheelEvent *event){
-    if(event->angleDelta().y() > 0)
-        chartView->chart()->zoomIn();
-    else
-        chartView->chart()->zoomOut();
-}
-
-void chartWindow::mousePressEvent(QMouseEvent *event){
-    if(event->button() == Qt::MiddleButton){
-        chartView->chart()->zoomReset();
-    }
-}*/
