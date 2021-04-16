@@ -32,11 +32,13 @@ mainWindow::mainWindow(){
     name = new QLabel("Name:");
     nframes = new QLabel("N. of frames:");
     vmaf = new QLabel("VMAF:");
+    typelabel = new QLabel("Type:");
     seriesCount = 1;
 
     gridInfo->addWidget(name, 1, 1);
     gridInfo->addWidget(nframes, 1, 2);
     gridInfo->addWidget(vmaf, 2, 1);
+    gridInfo->addWidget(typelabel, 2, 2);
     gridInfo->setColumnMinimumWidth(0, 10);
     gridInfo->setColumnMinimumWidth(3, 10);
     gridInfo->setRowMinimumHeight(0, 5);
@@ -141,6 +143,7 @@ mainWindow::~mainWindow(){
 void mainWindow::closeEvent(QCloseEvent *event){
     if(window)
         window->close();
+    QMainWindow::closeEvent(event);
 }
 
 
@@ -166,9 +169,27 @@ void mainWindow::setInfo(point *dataSet){
     label.append(QString::number(data[0].y));
     nframes->setText(label);
     label.clear();
-    label.append("VMAF: ");
-    label.append(QString::number(data[0].x));
-    vmaf->setText(label);   
+
+    if(data[0].x < 0){
+        label.append("Bitrate: ");
+        label.append(QString::number(data[0].x * (-1)));
+        vmaf->setText(label);   
+        
+        label.clear();
+        label.append("Type: ");
+        label.append("Bitrate/frame");
+        typelabel->setText(label);
+    }
+    else{
+        label.append("VMAF: ");
+        label.append(QString::number(data[0].x));
+        vmaf->setText(label);   
+
+        label.clear();
+        label.append("Type: ");
+        label.append("Vmaf/frame");
+        typelabel->setText(label);
+    }
     addBtn->setEnabled(1);
 }
 

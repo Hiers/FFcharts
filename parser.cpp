@@ -26,6 +26,7 @@ point *Parser::parseFile(char *fileName){
         point *dataSet = NULL;
         int size;
         int vmaf;
+        int bitrate;
 
         //if file is not valid json, try xml
         if(json.isNull()){
@@ -49,7 +50,6 @@ point *Parser::parseFile(char *fileName){
                 return NULL;
             }
             free(dataSet);
-            dataSet = NULL;
             dataSet = (point*)malloc(sizeof(point)*(size + 1));
             
             xml.skipCurrentElement();
@@ -69,29 +69,59 @@ point *Parser::parseFile(char *fileName){
             return dataSet;
         }
         else{
-            QJsonArray frames = json["frames"].toArray();
-            //in case a non-ffmpeg vmaf json file gets selected
-            if(!frames[0].toObject().contains("metrics")){
+            if(json["packets"].toArray().isEmpty()){
+                QJsonArray frames = json["frames"].toArray();
+                //in case a non-ffmpeg vmaf json file gets selected
+                if(!frames[0].toObject().contains("metrics")){
+                    file.close();
+                    return NULL;
+                }
+
+                size = (frames.last().toObject()["frameNum"].toInt() /
+                    json["params"]["subsample"].toInt());
+                vmaf = json["VMAF score"].toDouble();
+                
+                free(dataSet);
+                dataSet = (point*)malloc(sizeof(point)*(size + 1));
+
+                for(int a = 1; frames[a].isObject(); a++){
+                    dataSet[a].x = frames[a].toObject()["frameNum"].toInt();
+                    dataSet[a].y = frames[a].toObject()["metrics"].toObject()["vmaf"].toDouble();
+                }
+                dataSet[0].x = vmaf;
+                dataSet[0].y = size;
                 file.close();
-                return NULL;
+                return dataSet;
             }
-
-            size = (frames.last().toObject()["frameNum"].toInt() /
-                json["params"]["subsample"].toInt());
-            vmaf = json["VMAF score"].toDouble();
-            
-            free(dataSet);
-            dataSet = NULL;
-            dataSet = (point*)malloc(sizeof(point)*(size + 1));
-
-            for(int a = 1; frames[a].isObject(); a++){
-                dataSet[a].x = frames[a].toObject()["frameNum"].toInt();
-                dataSet[a].y = frames[a].toObject()["metrics"].toObject()["vmaf"].toDouble();
+            else{
+                QJsonArray packets = json["packets"].toArray();
+                printf("TAAAAAAAAAAAA\n");
+                
+                size = packets.size();
+                double packet_size;
+                bitrate = 0;
+                
+                free(dataSet);
+                dataSet = (point*)malloc(sizeof(point)*(size+1));
+                
+                for(int a = 1; packets[a].isObject(); a++){
+                    packet_size = (packets[a].toObject()["size"].toString().toInt() /
+                        packets[a].toObject()["duration_time"].toString().toDouble()) * 8 / 1000;
+                    
+                    dataSet[a].x = a;
+                    dataSet[a].y = packet_size;
+                    
+                    bitrate += packet_size;
+                }
+                dataSet[0].x = (bitrate / size) * (-1);
+                dataSet[0].y = size;
+                printf("%d\n", size);
+                
+                file.close();
+                return dataSet;
+                
+                
             }
-            dataSet[0].x = vmaf;
-            dataSet[0].y = size;
-            file.close();
-            return dataSet;
         }
 
     }
