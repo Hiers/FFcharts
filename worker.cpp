@@ -7,6 +7,9 @@ Worker::Worker(){
     current = 0;
 }
 
+Worker::~Worker(){
+    delete parser;
+}
 
 
 void Worker::parseFile(QString fileName){

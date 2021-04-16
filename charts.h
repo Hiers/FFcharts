@@ -7,6 +7,7 @@ class Charts{
 
     public:
         Charts();
+        ~Charts();
         QtCharts::QChart *createChart(point *series, int type, int n_subsample);
         QtCharts::QChart* removeSeries(int row);
 

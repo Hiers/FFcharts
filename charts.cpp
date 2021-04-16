@@ -10,6 +10,13 @@ Charts::Charts(){
     max = 5;
 }
 
+Charts::~Charts(){
+    for(int a = 0; a < max; a++)
+        delete allSeries[a];
+    delete allSeries;
+    //chart is already deleted by chartView
+}
+
 QtCharts::QChart* Charts::createChart(point *dataSet, int type, int n_subsample){
     allSeries[current] = new QtCharts::QLineSeries();
     allSeries[current]->setName("crf 40");

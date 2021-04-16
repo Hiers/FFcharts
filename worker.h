@@ -7,6 +7,7 @@ class Worker:public QObject{
 
     public:
         Worker();
+        ~Worker();
 
     private:
         Parser *parser;

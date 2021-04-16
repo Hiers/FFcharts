@@ -38,6 +38,7 @@ chartWindow::chartWindow(){
 
 chartWindow::~chartWindow(){
     delete layout;
+    delete chartView;
 }
 
 void chartWindow::changeChart(QtCharts::QChart *chart){
