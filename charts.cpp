@@ -40,8 +40,8 @@ QtCharts::QChart* Charts::createChart(point *dataSet, int type, int n_subsample)
     allSeries[current]->setName("crf 40");//change this to get the filename. also change parameters to take in filename
     allSeries[current]->attachAxis(xAxis);
 
-    if(xAxis->max() < dataSet[0].y)
-        xAxis->setMax(dataSet[0].y);
+    if(xAxis->max() < dataSet[dataSet[0].y - 1].x)
+        xAxis->setMax(dataSet[dataSet[0].y - 1].x);
     if(dataSet[0].x < 0){
         allSeries[current]->attachAxis(bitrateAxis);
     }
