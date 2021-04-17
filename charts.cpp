@@ -3,11 +3,19 @@
 #include <stdlib.h>
 
 Charts::Charts(){
+    //dynamic array of series to add and remove at will
     allSeries = (QtCharts::QLineSeries**)malloc(5*sizeof(QtCharts::QLineSeries*));
     chart = new QtCharts::QChart();
-    chart->setTitle("Vmaf chart");
     current = 0;
     max = 5;
+
+    xAxis = new QtCharts::QValueAxis();
+    vmafAxis = new QtCharts::QValueAxis();
+    bitrateAxis = new QtCharts::QValueAxis();
+    
+    chart->addAxis(xAxis, Qt::AlignBottom);
+    chart->addAxis(vmafAxis, Qt::AlignLeft);
+    chart->addAxis(bitrateAxis, Qt::AlignRight);
 }
 
 Charts::~Charts(){
@@ -19,7 +27,6 @@ Charts::~Charts(){
 
 QtCharts::QChart* Charts::createChart(point *dataSet, int type, int n_subsample){
     allSeries[current] = new QtCharts::QLineSeries();
-    allSeries[current]->setName("crf 40");
 
     for(int a = 1; a < dataSet[0].y; a+=n_subsample){
         allSeries[current]->append(dataSet[a].x, dataSet[a].y);
@@ -30,7 +37,17 @@ QtCharts::QChart* Charts::createChart(point *dataSet, int type, int n_subsample)
 
 
     chart->addSeries(allSeries[current]);
-    chart->createDefaultAxes();
+    allSeries[current]->setName("crf 40");//change this to get the filename. also change parameters to take in filename
+    allSeries[current]->attachAxis(xAxis);
+
+    if(xAxis->max() < dataSet[0].y)
+        xAxis->setMax(dataSet[0].y);
+    if(dataSet[0].x < 0){
+        allSeries[current]->attachAxis(bitrateAxis);
+    }
+    else{
+        allSeries[current]->attachAxis(vmafAxis);
+    }
     current++;
     return chart;
 }
